@@ -51,12 +51,14 @@ namespace Chat.Services.Hubs
         public async Task SendMessage(ClientMessage message)
         {
             await Clients.All.SendAsync("NewMessage", message);
-            await _messageService.Add(message);
 
             if (message.Message.StartsWith("/stock="))
             {
                 _sender.SendMessage(message);
+                return;
             }
+
+            await _messageService.Add(message);
         }
 
         public async Task DisconnectUser(string userName)

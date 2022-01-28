@@ -74,6 +74,7 @@ namespace ChatAPI
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
+
             });
         }
 
@@ -126,6 +127,7 @@ namespace ChatAPI
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapHub<ChatHub>("/hub/chat");
             });
+
 
             app.UseSpa(spa =>
             {

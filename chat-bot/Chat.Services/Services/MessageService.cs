@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Chat.Services.Contracts;
 using ChatBot.Core.Models;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Services.Services
 {
@@ -35,12 +37,11 @@ namespace Chat.Services.Services
             await _messageRepository.InsertAsync(newMessage);
         }
 
-        public async Task<IList<ClientMessage>> GetTopMessages()
+        public IList<ClientMessage> GetTopMessages()
         {
-            var messages = await _messageRepository.GetAllAsync();
-            var recentMessages = messages.OrderByDescending(message => message.CreatedOn).Take(50).ToList();
+            var messages = _messageRepository.Table.Include(x => x.User).OrderBy(message => message.CreatedOn).Take(50).ToList();
 
-            var clientMessages = recentMessages.Select(x => new ClientMessage { ClientUserName = x.User.UserName, SendedOnUtc = x.CreatedOn, Message = x.Body}).ToList();
+            var clientMessages = messages.Select(x => new ClientMessage { ClientUserName = x.User.UserName, SendedOnUtc = x.CreatedOn, Message = x.Body}).ToList();
 
             return clientMessages;
         }

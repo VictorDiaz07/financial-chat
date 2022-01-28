@@ -1,6 +1,7 @@
 ﻿using ChatBot.Core.Contracts;
 using ChatBot.Core.Models;
 using CsvHelper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,10 +10,18 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 
+
 namespace Bot.Services
 {
     public class BotService : IBot
     {
+        private readonly IConfiguration _configuration;
+
+        public BotService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         private string GetStockCodeFromMessage(string message)
         {
             var stockCode = string.Empty;
@@ -27,7 +36,7 @@ namespace Bot.Services
 
         private IList<StockQuote> GetStockQuoteFromAPI(string stockCode)
         {
-            var request = (HttpWebRequest)WebRequest.Create($"https://stooq.com/q/l/?s={stockCode}&f=sd2t2ohlcv&h&e=csv");
+            var request = (HttpWebRequest)WebRequest.Create(string.Format(_configuration.GetSection("StockUrl").Value, stockCode));
             var response = (HttpWebResponse)request.GetResponse();
 
             TextReader reader = new StreamReader(response.GetResponseStream());

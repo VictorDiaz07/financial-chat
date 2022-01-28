@@ -10,6 +10,6 @@ namespace Chat.Services.Contracts
     public interface IMessageService
     {
         Task Add(ClientMessage message);
-        Task<IList<ClientMessage>> GetTopMessages();
+        IList<ClientMessage> GetTopMessages();
     }
 }
