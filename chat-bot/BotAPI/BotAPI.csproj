@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bot.Messaging\Bot.Messaging.csproj" />
+    <ProjectReference Include="..\Core\ChatBot.Core.csproj" />
+    <ProjectReference Include="..\Service.Bot\Bot.Services.csproj" />
+  </ItemGroup>
+
+</Project>
